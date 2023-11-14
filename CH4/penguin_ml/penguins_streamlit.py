@@ -1,5 +1,9 @@
 import streamlit as st
 import pickle
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
 st.title("Penguin Classifier")
 st.write("This app uses 6 inputs to predict the species of penguin using"
         " a Random Forest Classifier.")
@@ -13,6 +17,8 @@ unique_penguin_map = pickle.load(map_pickle)
 rf_pickle.close()
 map_pickle.close()
 
+
+penguin_df = pd.read_csv("penguins.csv")
 island = st.selectbox("Penguin Island", options=["Biscoe", "Dream", "Torgerson"])
 sex = st.selectbox("Sex", options=["Female", "Male"])
 bill_length_mm = st.number_input("Bill Length (mm)", min_value=0)
@@ -50,3 +56,29 @@ new_prediction = rfc.predict([[
 
 prediction_species = unique_penguin_map[new_prediction][0]
 st.write("The predicted species is:", prediction_species)
+st.write("""
+We use a Machine Learning (Random Forest) model
+to predict the species of penguin.
+The features used in this prediction are ranked by relative importance below.
+""")
+st.image("feature_importance.png")
+st.write("""Below are the histograms for each continuous variable 
+separated by penguin species. The vertical line represents your inputted value.
+""")
+fig, ax = plt.subplots()
+ax = sns.displot(x=penguin_df.bill_length_mm, hue=penguin_df.species)
+plt.axvline(x=bill_length_mm)
+plt.title("Bill Length by Species")
+st.pyplot(ax)
+
+fig, ax = plt.subplots()
+ax = sns.displot(x=penguin_df.bill_depth_mm, hue=penguin_df.species)
+plt.axvline(x=bill_depth_mm)
+plt.title("Bill Depth by Species")
+st.pyplot(ax)
+
+fig, ax = plt.subplots()
+ax = sns.displot(x=penguin_df.flipper_length_mm, hue=penguin_df.species)
+plt.axvline(x=flipper_length_mm)
+plt.title("Flipper Length by Species")
+st.pyplot(ax)
