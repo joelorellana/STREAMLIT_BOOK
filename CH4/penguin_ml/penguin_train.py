@@ -76,3 +76,4 @@ new_prediction = rfc.predict(
 )
 prediction_species = unique_penguin_map[new_prediction][0]
 st.write("The predicted species is:", prediction_species)
+
