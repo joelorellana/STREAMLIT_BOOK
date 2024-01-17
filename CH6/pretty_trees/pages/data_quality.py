@@ -14,3 +14,4 @@ trees_df.loc[edited_df.index] = edited_df # edited_df is a dataframe with the sa
 if st.button("Save data and overwrite: "):
     trees_df.to_csv('./pretty_trees/trees.csv', index=False)
     st.write('Data saved!')
+    
